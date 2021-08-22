@@ -1,8 +1,40 @@
 @import './variables';
+@import '../../node_modules/notie/src/notie';
+
 body{
     font-family: 'Lato', sans-serif;
     -webkit-font-smoothing:antialiased;
     color: $dark;
+}
+
+.notie-container{
+    width: 50 px;
+    padding: 0px;
+    display: flex;
+    left:1250px;
+    border-radius: 25px;
+
+}
+
+.notie-background-info {
+    width: 250px;
+    border-radius: 25px;
+    background-color: #FE5F1E;
+}
+
+.notie-textbox-inner {
+    margin: 0 auto;
+    max-width: 900px;
+    font-size: 18px;
+    font-weight: normal;
+    text-decoration: none;
+    padding: 4px 10px 4px 10px;
+}
+
+.notie-textbox{
+    padding: 0px;
+    margin: 0px;
+    text-decoration: none;
 }
 
 nav li:last-child a{
@@ -35,6 +67,9 @@ section.hero{
         background: $primary;
         border-color: $pure;
         color: white;
+    }
+    &:focus{
+        outline: none;
     }
 }
 
