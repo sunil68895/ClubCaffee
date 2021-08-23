@@ -3,6 +3,7 @@ const express = require('express')
 const app=express()
 const ejs=require('ejs')
 const path=require('path')
+const passsport= require('passport')
 const expressLayout=require('express-ejs-layouts')
 const mongoose=require('mongoose')
 const session=require('express-session')
@@ -23,6 +24,8 @@ connection.once('open', () => {
 });
 
 
+
+
 //session store
 
 let mongoStore=new MongoDbStore({
@@ -41,16 +44,25 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 60 * 24 } // 24 hour
 }))
 
+//passport config
+const passportInit= require('./app/config/passport')
+passportInit(passsport)
+
+app.use(passsport.initialize())
+app.use(passsport.session())
+
 app.use(flash())
 
 //Assets
 app.use(express.static('public'))
 app.use(express.json())
+app.use(express.urlencoded({extended:false}))
 
 //Global middleware
 
 app.use((req,res,next)=>{
     res.locals.session=req.session
+    res.locals.user=req.user
     next()
 })
 
