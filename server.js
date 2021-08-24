@@ -9,6 +9,7 @@ const mongoose=require('mongoose')
 const session=require('express-session')
 const flash=require('express-flash')
 const MongoDbStore=new require('connect-mongodb-session')(session) 
+const Emitter=require('events')
 
 const PORT = process.env.PORT || 3000
 
@@ -24,14 +25,17 @@ connection.once('open', () => {
 });
 
 
-
-
 //session store
 
 let mongoStore=new MongoDbStore({
     uri:'mongodb+srv://root:sunil68896@cluster0.focoz.mongodb.net/pizza?retryWrites=true&w=majority',
     collection: 'sessions'
 })
+
+//Event emitter
+
+const eventEmitter = new Emitter()
+app.set('eventEmitter', eventEmitter)
 
 
 //session config
@@ -76,6 +80,26 @@ require('./routes/web')(app);
 
 
 
-app.listen( PORT , ()=>{
+const server=app.listen( PORT , ()=>{
     console.log(`listening on port ${PORT}`)
+})
+
+
+
+//Socket
+
+const io=require('socket.io')(server)
+io.on('connection',(socket)=>{
+    // Join
+    socket.on('join',(roomName)=>{
+        socket.join(roomName)
+    })
+})
+
+eventEmitter.on('orderUpdated',(data)=>{
+    io.to(`order_${data.id}`).emit('orderUpdated',data)
+})
+
+eventEmitter.on('orderPlaced',(data)=>{
+    io.to(`adminRoom`).emit('orderPlaced',data)
 })

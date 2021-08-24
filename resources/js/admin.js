@@ -1,7 +1,7 @@
 import axios from 'axios'
 import moment from 'moment'
 
- function initAdmin(){
+ function initAdmin(socket){
     const orderTableBody=document.querySelector('#orderTableBody')
 
     let orders=[]
@@ -13,7 +13,6 @@ import moment from 'moment'
         }
     }).then((res)=>{
         orders=res.data
-        console.log(orders)
         markup=generateMarkup(orders)
         orderTableBody.innerHTML=markup
     }).catch(error=>{
@@ -82,6 +81,16 @@ import moment from 'moment'
             
         }).join('')
     }
+
+    // Socket
+    socket.on('orderPlaced', (order) => {
+        orders.unshift(order)
+        orderTableBody.innerHTML = ''
+        orderTableBody.innerHTML = generateMarkup(orders)
+    })
 }
+
+
+
 
 export default initAdmin
