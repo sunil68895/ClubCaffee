@@ -32,6 +32,10 @@ function cartController(){
 
 
             return res.json({totalQty:cart.totalQty})
+        },
+        delete(req,res){
+            delete req.session.cart
+            return res.json({message:'cart deleted successfully'})
         }
     }
 }

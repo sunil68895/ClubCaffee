@@ -139,6 +139,16 @@ body {
   color: #232323;
 }
 
+.logo {
+  height: 50px;
+  width: 50px;
+}
+
+.logo_text {
+  font-weight: bold;
+  color: #FE5F1E;
+}
+
 .notie-container {
   width: 50 px;
   padding: 0px;

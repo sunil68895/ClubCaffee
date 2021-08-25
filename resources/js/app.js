@@ -2,27 +2,12 @@ import axios from 'axios'
 import moment from 'moment'
 import Noty from 'notie'
 import initAdmin from './admin'
+import { initStripe } from './stripe'
 
 
 let addTocart= document.querySelectorAll('.add-to-cart')
 let cartCounter=document.querySelector('#cartCounter')
-
-
-function updateCart(item){
-    axios.post('/update-cart',item)
-    .then(res=>{
-        cartCounter.innerHTML= res.data.totalQty
-        Noty.alert({
-            text:'Item added to cart',
-        })
-    }).catch((err)=>{
-        Noty.alert({
-            text:'Something went wrong',
-        })
-    })
-}
-
-
+let deleteCart=document.querySelector('#deleteCart')
 
 
 addTocart.forEach((btn)=>{
@@ -40,6 +25,37 @@ if(alertMsg){
         alertMsg.remove()
     },2000)
 }
+
+
+
+function updateCart(item){
+    axios.post('/update-cart',item)
+    .then(res=>{
+        cartCounter.innerHTML= res.data.totalQty
+        Noty.alert({
+            text:'Item added to cart',
+        })
+    }).catch((err)=>{
+        Noty.alert({
+            text:'Something went wrong',
+        })
+    })
+}
+
+function deleteCartItems(){
+    axios.get('/delete-cart').then((req,res)=>{
+        Noty.alert({
+            text:'Cart deleted',
+        })
+    })
+}
+if(deleteCart){
+deleteCart.addEventListener('click',(e)=>{
+    deleteCartItems()
+})}
+
+
+
 
 
 
@@ -73,6 +89,8 @@ function updateStatus(order){
 }
 
 updateStatus(order)
+
+initStripe()
 
 //Socket
 let socket= io()
