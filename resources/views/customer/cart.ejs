@@ -21,7 +21,7 @@
                             <%=cartItem.qty%> Pcs
                         </span>
                         <span class="flex-1">
-                            <%=cartItem.item.calories%> Calories
+                            <%=cartItem.item.calories*cartItem.qty%> Calories
                         </span>
                         <span class=" font-bold text-lg">₹<%=cartItem.item.price * cartItem.qty%></span>
 
@@ -30,9 +30,16 @@
             </div>
             <hr>
             <div class="text-right py-4">
-                <div>
-                    <span class="text-lg font-bold">Total amount</span>
-                    <span class="amount text-2xl font-bold ml-2">₹<%= session.cart.totalPrice%></span>
+                <div class="flex justify-between">
+
+                    <div>
+                        <span class="text-lg font-bold">Total calories : </span>
+                        <span class="amount text-2xl font-bold ml-2"><%= session.cart.totalCalories%></span>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold">Total amount</span>
+                        <span class="amount text-2xl font-bold ml-2">₹<%= session.cart.totalPrice%></span>
+                    </div>
                 </div>
                 <div>
                     <button id="deleteCart"

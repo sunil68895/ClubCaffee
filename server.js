@@ -13,10 +13,9 @@ const Emitter=require('events')
 
 const PORT = process.env.PORT || 3000
 
-const url='mongodb+srv://root:sunil68896@cluster0.focoz.mongodb.net/pizza?retryWrites=true&w=majority'
 
 // Database connection
-mongoose.connect(url, { useNewUrlParser: true, useCreateIndex:true, useUnifiedTopology: true, useFindAndModify : true });
+mongoose.connect(process.env.MONGO_DB_URL, { useNewUrlParser: true, useCreateIndex:true, useUnifiedTopology: true, useFindAndModify : true });
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log('Database connected...');
@@ -28,7 +27,7 @@ connection.once('open', () => {
 //session store
 
 let mongoStore=new MongoDbStore({
-    uri:'mongodb+srv://root:sunil68896@cluster0.focoz.mongodb.net/pizza?retryWrites=true&w=majority',
+    uri:process.env.MONGO_DB_URL,
     collection: 'sessions'
 })
 
@@ -76,7 +75,9 @@ app.set('views', path.join(__dirname,'/resources/views'))
 app.set('view engine','ejs')
 
 require('./routes/web')(app);
-
+app.use((req,res)=>{
+    res.status(404).send('<h1>404, Page not found</h1>')
+})
 
 
 
